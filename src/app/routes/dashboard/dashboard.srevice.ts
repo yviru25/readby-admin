@@ -6,31 +6,31 @@ export class DashboardService {
   stats = [
     {
       title: 'Total Courses',
-      value: '180,200',
+      value: '2',
       color: 'bg-indigo-500',
       iconName: 'courses'
     },
     {
       title: 'Total Subjects',
-      value: '70,205',
+      value: '2',
       color: 'bg-blue-500',
       iconName: 'subjects'
     },
     {
       title: 'Total Chapters',
-      value: '70,205',
+      value: '2',
       color: 'bg-blue-500',
       iconName: 'chapters'
     },
     {
       title: 'Total Topics',
-      value: '70,205',
+      value: '2',
       color: 'bg-blue-500',
       iconName: 'topics'
     },
     {
       title: 'Total Users',
-      value: '70,205',
+      value: '2',
       color: 'bg-blue-500',
       iconName: 'grpusers'
     }

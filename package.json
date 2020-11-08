@@ -7,9 +7,7 @@
     "test": "ng test",
     "e2e": "ng e2e",
     "build": "ng build --aot --prod",
-    "build:prod": "ng build --aot --prod",
-    "build:release": "ng build --aot --prod",
-    "postinstall": "ng build --aot --prod"
+    "heroku-postbuild": "ng build --prod"
   },
   "engines": {
     "node": ">=10.0.0",
