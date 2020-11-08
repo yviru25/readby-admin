@@ -1,0 +1,22 @@
+<breadcrumb [currentRoute]="'Dashboard'"></breadcrumb>
+
+<div class="matero-row" fxLayout="row wrap">
+
+  <!-- Statistics -->
+  <div class="matero-col" fxFlex.gt-sm="25" fxFlex.gt-xs="50" fxFlex="100"
+       *ngFor="let stat of stats">
+    <mat-card>
+      <mat-card-title style="font-size: 16px; font-weight: 500;">
+         {{stat.title}}</mat-card-title>
+      <mat-card-content fxLayout="row">
+        <div fxFlex="50" fxLayoutAlign="top start">
+          <h2>{{stat.value}}</h2>
+        </div>
+        <div fxFlex="50" fxLayoutAlign="end">
+            <img src="assets/images/stat-icon/{{stat.iconName}}.png" style="height: 45px;" />
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  </div>

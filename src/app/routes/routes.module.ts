@@ -1,0 +1,42 @@
+import { NgModule } from '@angular/core';
+import { SharedModule } from '@shared/shared.module';
+import { RoutesRoutingModule } from './routes-routing.module';
+
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { LoginComponent } from './sessions/login/login.component';
+import { RegisterComponent } from './sessions/register/register.component';
+import { CoursesComponent } from './courses/courses.component';
+import { SubjectsComponent } from './subjects/subjects.component';
+import { ChaptersComponent } from './chapters/chapters.component';
+import { TopicsComponent } from './topics/topics.component';
+import { UsersComponent } from './users/users.component';
+import { BoardComponent } from './board/board.component';
+import { AddCourseComponent } from './courses/add-course/add-course.component';
+import { AddSubjectComponent } from './courses/add-subject/add-subject.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { EditSubjectComponent } from './subjects/edit-subject/edit-subject.component';
+import { AddChapterComponent } from './subjects/add-chapter/add-chapter.component';
+import { EditChaptersComponent } from './chapters/edit-chapters/edit-chapters.component';
+import { AddTopicComponent } from './chapters/add-topic/add-topic.component';
+import { EditTopicComponent } from './topics/edit-topic/edit-topic.component';
+import { AddBoardComponent } from './board/add-board/add-board.component';
+import { EditBoardComponent } from './board/edit-board/edit-board.component';
+
+const COMPONENTS = [DashboardComponent, LoginComponent, RegisterComponent];
+const COMPONENTS_DYNAMIC = [];
+
+@NgModule({
+  imports: [
+    SharedModule,
+    RoutesRoutingModule,
+    FormsModule,
+    ReactiveFormsModule
+  ],
+  declarations: [...COMPONENTS, ...COMPONENTS_DYNAMIC,
+    CoursesComponent, SubjectsComponent, ChaptersComponent,
+    TopicsComponent, UsersComponent, BoardComponent, AddCourseComponent,
+    AddSubjectComponent, EditSubjectComponent, AddChapterComponent, EditChaptersComponent,
+    AddTopicComponent, EditTopicComponent, AddBoardComponent, EditBoardComponent],
+  entryComponents: COMPONENTS_DYNAMIC,
+})
+export class RoutesModule {}

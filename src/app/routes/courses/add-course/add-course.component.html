@@ -1,0 +1,94 @@
+<div fxLayout="row" fxLayoutAlign="end">
+    <div>
+        <a class="closeDialog" href="javascript:void(0)" (click)="destroyDailog()" >
+            <mat-icon style="color: red;">close</mat-icon>
+        </a>
+    </div>
+</div><br>
+<mat-card style="width: 400px;" *ngIf="!isUpdate">
+    <mat-card-title class="text-center">Add Course</mat-card-title>
+
+    <form class="form-field-full">
+      <mat-form-field>
+        <mat-label>Code</mat-label>
+        <input matInput name="code"  required>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Name</mat-label>
+        <input matInput name="code"  required>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Select Type</mat-label>
+        <mat-select>
+            <mat-option>Academic</mat-option>
+            <mat-option>Compitative</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Select Years</mat-label>
+        <mat-select>
+            <mat-option>1</mat-option>
+            <mat-option>2</mat-option>
+            <mat-option>3</mat-option>
+            <mat-option>4</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Select Stream</mat-label>
+        <mat-select>
+            <mat-option>HR</mat-option>
+            <mat-option>Finance</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div fxLayoutAlign="center">
+        <button mat-raised-button color="primary" >Submit</button>
+      </div>
+    </form>
+
+  </mat-card>
+
+  <mat-card style="width: 400px;" *ngIf="isUpdate" >
+    <mat-card-title class="text-center">Update Course</mat-card-title>
+
+    <form #f="ngForm" (ngSubmit)="onSubmit()" class="form-field-full">
+      <mat-form-field>
+        <mat-label>Code</mat-label>
+        <input matInput name="courseCode"
+        #courseCode="ngModel" [(ngModel)]="courseModel.courseCode"  required>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Name</mat-label>
+        <input matInput name="courseName" #courseName="ngModel" [(ngModel)]="courseModel.courseName"  required>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Select Type</mat-label>
+        <mat-select matNativeControl name="courseType"
+        #courseType="ngModel" [(ngModel)]="courseModel.courseType" [value]="courseModel.courseType">
+            <mat-option value="Academic">Academic</mat-option>
+            <mat-option value="Compitative">Compitative</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Select Years</mat-label>
+        <mat-select matNativeControl [value]="courseModel.courseYear" required>
+            <mat-option [value]=1>1</mat-option>
+            <mat-option [value]=2>2</mat-option>
+            <mat-option [value]=3>3</mat-option>
+            <mat-option [value]=4>4</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Select Stream</mat-label>
+        <mat-select matNativeControl name="courseStream"
+        #courseStream="ngModel" [(ngModel)]="courseModel.courseStream" [value]="courseModel.courseStream">
+            <mat-option value="HR">HR</mat-option>
+            <mat-option value="Finance">Finance</mat-option>
+            <mat-option value="CSE">CSE</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div fxLayoutAlign="center">
+        <button [disabled]="!f.valid" mat-raised-button color="primary" >Submit</button>
+      </div>
+    </form>
+
+  </mat-card>

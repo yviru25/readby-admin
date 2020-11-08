@@ -1,0 +1,22 @@
+<breadcrumb [currentRoute]="'Chapter Management'"></breadcrumb>
+
+<mat-card>
+    <mtx-grid [data]="list"
+    [columns]="columns"
+    [multiSelectable]="multiSelectable"
+    [rowSelectable]="rowSelectable"
+    [hideRowSelectionCheckbox]="hideRowSelectionCheckbox"
+    [rowHover]="rowHover"
+    [rowStriped]="rowStriped"
+    [showToolbar]="showToolbar"
+    [toolbarTitle]="'Chapter Management'"
+    [columnHideable]="columnHideable"
+    [columnMovable]="columnMovable"
+    [expandable]="expandable"
+    [pageOnFront]="showPaginator"
+    [showPaginator]="showPaginator"
+    [pageSizeOptions]="[5,10,50,100]"
+    [pageIndex]="0"
+    [pageSize]="5" >
+</mtx-grid>
+</mat-card>
