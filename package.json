@@ -6,10 +6,14 @@
     "start": "ng serve",
     "test": "ng test",
     "e2e": "ng e2e",
-    "build": "ng build --aot --prod --baseHref=/readby-admin/",
-    "build:prod": "ng build --aot --prod --baseHref=/readby-admin/",
-    "build:release": "ng build --aot --prod --baseHref=/readby-admin/",
-    "postinstall": "ng build --aot --prod --baseHref=/readby-admin-portal/"
+    "build": "ng build --aot --prod",
+    "build:prod": "ng build --aot --prod",
+    "build:release": "ng build --aot --prod",
+    "postinstall": "ng build --aot --prod"
+  },
+  "engines": {
+    "node": ">=10.0.0",
+    "npm": ">=6.0.0"
   },
   "private": true,
   "dependencies": {
