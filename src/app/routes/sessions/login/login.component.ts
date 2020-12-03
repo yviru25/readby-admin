@@ -9,7 +9,7 @@ import { SettingsService, StartupService, TokenService } from '@core';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
-
+  loading = false;
   constructor(
     private fb: FormBuilder,
     private router: Router,

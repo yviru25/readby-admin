@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '@shared/shared.module';
 import { RoutesRoutingModule } from './routes-routing.module';
-
-import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginComponent } from './sessions/login/login.component';
 import { RegisterComponent } from './sessions/register/register.component';
 import { CoursesComponent } from './courses/courses.component';
@@ -21,6 +19,9 @@ import { AddTopicComponent } from './chapters/add-topic/add-topic.component';
 import { EditTopicComponent } from './topics/edit-topic/edit-topic.component';
 import { AddBoardComponent } from './board/add-board/add-board.component';
 import { EditBoardComponent } from './board/edit-board/edit-board.component';
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { UsertransComponent } from './usertrans/usertrans.component';
 
 const COMPONENTS = [DashboardComponent, LoginComponent, RegisterComponent];
 const COMPONENTS_DYNAMIC = [];
@@ -30,13 +31,14 @@ const COMPONENTS_DYNAMIC = [];
     SharedModule,
     RoutesRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxSpinnerModule
   ],
   declarations: [...COMPONENTS, ...COMPONENTS_DYNAMIC,
     CoursesComponent, SubjectsComponent, ChaptersComponent,
     TopicsComponent, UsersComponent, BoardComponent, AddCourseComponent,
     AddSubjectComponent, EditSubjectComponent, AddChapterComponent, EditChaptersComponent,
-    AddTopicComponent, EditTopicComponent, AddBoardComponent, EditBoardComponent],
+    AddTopicComponent, EditTopicComponent, AddBoardComponent, EditBoardComponent, UsertransComponent],
   entryComponents: COMPONENTS_DYNAMIC,
 })
 export class RoutesModule {}

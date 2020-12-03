@@ -5,6 +5,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddCourseComponent } from './add-course/add-course.component';
 import { AddSubjectComponent } from './add-subject/add-subject.component';
 import { CourseModel } from './model/course-interface';
+import { ApiService } from '../../shared/services/api.services';
+import { LocalStorageService } from '../../shared/services/storage.service';
+import { NgxSpinnerService } from 'ngx-spinner';
+import Swal from 'sweetalert2/dist/sweetalert2.js';
+import { NavigationEnd, Router } from '@angular/router';
 
 @Component({
   selector: 'app-courses',
@@ -12,10 +17,12 @@ import { CourseModel } from './model/course-interface';
   styleUrls: ['./courses.component.scss']
 })
 export class CoursesComponent implements OnInit {
+  courseModel: CourseModel[];
   @ViewChild('statusCourse', { static: true }) statusCourse: TemplateRef<any>;
   columns: MtxGridColumn[] = [
     { header: 'Code', field: 'courseCode', sortable: true },
     { header: 'Name', field: 'courseName', sortable: true},
+    { header: 'Image', field: 'iconPath', type: 'image'},
     { header: 'Year', field: 'courseYear', sortable: true, },
     { header: 'Stream', field: 'courseStream', sortable: true, },
     { header: 'Type', field: 'courseType', sortable: true },
@@ -42,39 +49,16 @@ export class CoursesComponent implements OnInit {
           tooltip: 'Delete Course',
           color: 'warn',
           type: 'icon',
-          pop: true,
-          popTitle: 'Are you sure want to delete course ?',
           click: record => this.delete(record),
         },
         {
           icon: 'add_circle_outline',
-          tooltip: 'Add Subject',
+          tooltip: 'Add Course',
           type: 'icon',
-          click: record => this.add(record),
+          click: record => this.addCourse(),
         },
       ],
     },
-  ];
-
-  list: CourseModel[] = [
-    {
-        courseId: 1,
-        courseCode: 'MBA001',
-        courseName: 'MBA',
-        courseYear: 2,
-        courseStream: 'Finance',
-        courseType: 'Compitative',
-        status: true
-    },
-    {
-        courseId: 2,
-        courseCode: 'Btech002',
-        courseName: 'B-Tech',
-        courseYear: 4,
-        courseStream: 'CSE',
-        courseType: 'Academic',
-        status: false
-    }
   ];
   isLoading = true;
   multiSelectable = true;
@@ -87,13 +71,57 @@ export class CoursesComponent implements OnInit {
   rowStriped = false;
   showPaginator = true;
   expandable = false;
-
-  constructor(public dialog: MatDialog) { }
+  courseList = [];
+  courseTypeList = [];
+  mySubscription: any;
+  constructor(private dialog: MatDialog,
+              private service: ApiService,
+              private localStorage: LocalStorageService,
+              private spiner: NgxSpinnerService,
+              private router: Router) {
+              this.getCourseList();
+              this.courseTypeList = this.localStorage.get('courseType');
+  }
 
   ngOnInit(): void {
   }
 
+  getCourseList() {
+     this.spiner.show();
+     this.service.sendGetRequest('getCourseList').subscribe((res) => {
+          // tslint:disable-next-line:prefer-for-of
+          for (let index = 0; index < res.data.length; index++) {
+            const element = {
+                courseCode: res.data[index].COURSE_CODE,
+                courseId: res.data[index].COURSE_ID,
+                courseName: res.data[index].COURSE_NAME,
+                boardId: res.data[index].BOARD_ID,
+                courseStream: res.data[index].MAS_STREAM.length > 0 ? res.data[index].MAS_STREAM[0].STREAM_NAME : '',
+                masStreamCode: res.data[index].MAS_STREAM.length > 0 ? res.data[index].MAS_STREAM[0].STREAM_CODE : '',
+                courseType: res.data[index].MAS_COURSE_TYPE !== null ? res.data[index].MAS_COURSE_TYPE.COURSE_TYPE_NAME : '',
+                courseTypeId: res.data[index].COURSE_TYPE_ID,
+                courseYear: res.data[index].MAS_COURSE_YEAR.length > 0 ? res.data[index].MAS_COURSE_YEAR[0].YEAR : '',
+                iconPath: res.data[index].icon_path,
+                masCourse: res.data[index].MAS_STREAM,
+                masCourseYear: res.data[index].MAS_COURSE_YEAR,
+                status: true
+            };
+            this.courseList.push(element);
+          }
+          this.courseModel = this.courseList;
+          this.spiner.hide();
+     }, (error) => {
+        this.spiner.hide();
+        Swal.fire(
+          error.split(',')[0],
+          error.split(',')[1],
+          'error'
+        );
+      });
+  }
+
   edit(record: any) {
+    console.log(record);
     this.dialog.open(AddCourseComponent, {
       data: {
         selectedData: record,
@@ -104,7 +132,53 @@ export class CoursesComponent implements OnInit {
   }
 
   delete(record: any) {
-    console.log('delete methods call...');
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Want to delete course',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, go ahead.',
+      cancelButtonText: 'No, let me think'
+    }).then((result) => {
+      if (result.value) {
+        this.spiner.show();
+        this.service.sendGetRequest('deleteCourse?courseId=' + record.courseId)
+            .subscribe( res => {
+                this.spiner.hide();
+                if (res.status === '200') {
+                  this.getCourseList();
+                  Swal.fire(
+                    'Deleted!',
+                    'Course removed successfully.',
+                    'success'
+                  ).then( okay => {
+                    if (okay) {
+                      window.location.reload();
+                    }
+                });
+                } else {
+                  Swal.fire(
+                    'Cancelled!',
+                    'Something went worng, please try later',
+                    'error'
+                  );
+                }
+            }, (error) => {
+              this.spiner.hide();
+              Swal.fire(
+                error.split(',')[0],
+                error.split(',')[1],
+                'error'
+              );
+            });
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire(
+          'Cancelled',
+          'Course still in our database.)',
+          'error'
+        );
+      }
+    });
   }
 
   add(record: any) {
@@ -117,6 +191,7 @@ export class CoursesComponent implements OnInit {
         selectedData: null,
         isUpdate: false
       },
+      height: 'auto',
       disableClose: true
     });
   }

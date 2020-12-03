@@ -1,3 +1,4 @@
+import { StringLiteral } from 'typescript';
 
 export interface CourseModel {
     courseCode: string;
@@ -7,4 +8,11 @@ export interface CourseModel {
     courseType: string;
     courseYear: number;
     status: boolean;
+    iconPath: string;
+    masCourseType: string;
+    masCourseYear: any;
+    masStreamCode: string;
+    boardId: number;
+    courseTypeId: number;
+    masStream: any;
 }

@@ -70,6 +70,14 @@ export class SidemenuComponent {
         color: 'red-500',
         value: '5'
     },
+    {
+        route: 'user/transcation',
+        name: 'User Transcation',
+        type: 'link',
+        icon: 'assessment',
+        color: 'red-500',
+        value: '5'
+    }
   ];
 
   constructor(private menu: MenuService) {}

@@ -25,69 +25,18 @@ export class DefaultInterceptor implements HttpInterceptor {
     private settings: SettingsService
   ) {}
 
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    // Add server host
-    const url = environment.SERVER_ORIGIN + req.url;
-
-    // Only intercept API url
-    if (!url.includes('/api/')) {
-      return next.handle(req);
-    }
-
-    // All APIs need JWT authorization
-    const headers = {
-      'Accept': 'application/json',
-      'Accept-Language': this.settings.language,
-      'Authorization': `Bearer ${this.token.get().token}`,
-    };
-
-    const newReq = req.clone({ url, setHeaders: headers, withCredentials: true });
-
-    return next.handle(newReq).pipe(
-      mergeMap((event: HttpEvent<any>) => this.handleOkReq(event)),
-      catchError((error: HttpErrorResponse) => this.handleErrorReq(error))
-    );
-  }
-
-  private goto(url: string) {
-    setTimeout(() => this.router.navigateByUrl(url));
-  }
-
-  private handleOkReq(event: HttpEvent<any>): Observable<any> {
-    if (event instanceof HttpResponse) {
-      const body: any = event.body;
-      // failure: { code: **, msg: 'failure' }
-      // success: { code: 0,  msg: 'success', data: {} }
-      if (body && body.code !== 0) {
-        if (body.msg && body.msg !== '') {
-          this.toastr.error(body.msg);
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    // let token = window.localStorage.getItem('token');
+    const token = 'abc';
+    if (token) {
+      request = request.clone({
+        setHeaders: {
+          Authorization: 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiJzb2Z0dGVrSldUIiwic3ViIjoicmVhZCIsImF1dGhvcml0aWVzIjpbeyJkZWxlZ2F0ZSI6Im9yZy5zcHJpbmdmcmFtZXdvcmsuc2VjdXJpdHkuY29yZS5HcmFudGVkQXV0aG9yaXR5Iiwib3duZXIiOiJvcmcuc3ByaW5nZnJhbWV3b3JrLnNlY3VyaXR5LmNvcmUuR3JhbnRlZEF1dGhvcml0eSIsInRoaXNPYmplY3QiOm51bGwsInJlc29sdmVTdHJhdGVneSI6MCwiZGlyZWN0aXZlIjowLCJwYXJhbWV0ZXJUeXBlcyI6W10sIm1heGltdW1OdW1iZXJPZlBhcmFtZXRlcnMiOjAsIm1ldGhvZCI6ImdldEF1dGhvcml0eSJ9XX0.nOgf_twKN_lhmHMIl1reTwrNN71QiAaeyu9iB5ytRv21gpvU4PR7v9JI9X2vNYZ9TETrsxCRLe3GaezJbGgyig',
         }
-        return throwError([]);
-      } else {
-        return of(event);
-      }
+      });
+      return next.handle(request);
     }
-    // Pass down event if everything is OK
-    return of(event);
   }
 
-  private handleErrorReq(error: HttpErrorResponse): Observable<never> {
-    switch (error.status) {
-      case 401:
-        this.goto(`/auth/login`);
-        break;
-      case 403:
-      case 404:
-      case 500:
-        this.goto(`/sessions/${error.status}`);
-        break;
-      default:
-        if (error instanceof HttpErrorResponse) {
-          console.error('ERROR', error);
-          this.toastr.error(error.error.msg || `${error.status} ${error.statusText}`);
-        }
-        break;
-    }
-    return throwError(error);
-  }
+
 }

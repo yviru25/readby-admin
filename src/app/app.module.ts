@@ -1,9 +1,7 @@
 import { NgModule } from '@angular/core';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpClientModule, HttpClient, HttpInterceptor } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
-import { CoreModule } from './core/core.module';
 import { ThemeModule } from './theme/theme.module';
 import { RoutesModule } from './routes/routes.module';
 import { SharedModule } from './shared/shared.module';
@@ -19,7 +17,6 @@ export function TranslateHttpLoaderFactory(http: HttpClient) {
 
 import { httpInterceptorProviders } from '@core/interceptors';
 import { appInitializerProviders } from '@core/initializers';
-import { FormlyConfigModule } from './formly-config.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -27,11 +24,9 @@ import { FormlyConfigModule } from './formly-config.module';
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    CoreModule,
     ThemeModule,
     RoutesModule,
     SharedModule,
-    FormlyConfigModule.forRoot(),
     ToastrModule.forRoot(),
     TranslateModule.forRoot({
       loader: {
@@ -41,7 +36,7 @@ import { FormlyConfigModule } from './formly-config.module';
       },
     }),
   ],
-  providers: [httpInterceptorProviders, appInitializerProviders],
+  providers: [ httpInterceptorProviders, appInitializerProviders],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

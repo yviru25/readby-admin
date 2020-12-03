@@ -14,6 +14,7 @@ import { ChaptersComponent } from './chapters/chapters.component';
 import { TopicsComponent } from './topics/topics.component';
 import { UsersComponent } from './users/users.component';
 import { BoardComponent } from './board/board.component';
+import { UsertransComponent } from './usertrans/usertrans.component';
 
 const routes: Routes = [
   {
@@ -56,6 +57,11 @@ const routes: Routes = [
       {
         path: 'board/management',
         component: BoardComponent,
+        pathMatch: 'full'
+      },
+      {
+        path: 'user/transcation',
+        component: UsertransComponent,
         pathMatch: 'full'
       },
       {
